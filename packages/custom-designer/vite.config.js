@@ -10,14 +10,14 @@ import nodePolyfill from 'rollup-plugin-polyfill-node'
 import esbuildCopy from 'esbuild-plugin-copy'
 import lowcodeConfig from './config/lowcode.config'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import { importmapPlugin } from './scripts/externalDeps'
+import { importmapPlugin } from './packages/scripts/externalDeps'
 import visualizer from 'rollup-plugin-visualizer'
 
 const origin = 'http://localhost:9090/'
 
 const config = {
   base: './',
-  publicDir: path.resolve(__dirname, './public'),
+  publicDir: path.resolve(__dirname, './packages/public'),
   resolve: {
     extensions: ['.js', '.jsx', '.vue'],
     alias: {}
@@ -66,8 +66,7 @@ const config = {
     vueJsx(),
     createSvgIconsPlugin({
       iconDirs: [
-        path.resolve(__dirname, './assets/rf-resources/'), // 脚手架执行构建时将图元图片拷贝到此目录
-        path.resolve(__dirname, './assets/')
+        path.resolve(__dirname, './packages/assets/')
       ],
       symbolId: 'icon-[name]',
       inject: 'body-last'
