@@ -5,7 +5,7 @@
     "preinstall": "npx only-allow pnpm",
     "dev": "pnpm run setup && concurrently 'pnpm:serve:backend' 'pnpm:serve:frontend'",
     "dev:mock": "pnpm --filter @opentiny/tiny-engine dev",
-    "serve:frontend": "pnpm --filter @opentiny/tiny-engine serve",
+    "serve:frontend": "pnpm --filter custom-designer serve",
     "serve:backend": "pnpm --filter @opentiny/tiny-engine-mock dev",
     "build:plugin": "pnpm --filter @opentiny/tiny-engine-* build",
     "build:alpha": "pnpm --filter @opentiny/tiny-engine build:alpha",
