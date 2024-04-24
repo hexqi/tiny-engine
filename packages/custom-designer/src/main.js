@@ -24,20 +24,26 @@ import 'virtual:svg-icons-register'
 import TinyThemeTool from '@opentiny/vue-theme/theme-tool'
 import { tinySmbTheme } from '@opentiny/vue-theme/theme' // SMB 主题
 
-initHttp({ env: import.meta.env })
+function createDesigner() {
+  initHttp({ env: import.meta.env })
 
-// eslint-disable-next-line no-new
-new TinyThemeTool(tinySmbTheme, 'smbtheme') // 初始化主题
+  // eslint-disable-next-line no-new
+  new TinyThemeTool(tinySmbTheme, 'smbtheme') // 初始化主题
+  
+  if (import.meta.env.VITE_ERROR_MONITOR === 'true' && import.meta.env.VITE_ERROR_MONITOR_URL) {
+    initMonitor(import.meta.env.VITE_ERROR_MONITOR_URL)
+  }
+  
+  window.TinyGlobalConfig = globalConfig
+  setGlobalConfig(globalConfig)
+  
+  const app = createApp(App)
+  
+  initSvgs(app)
+  window.lowcodeI18n = i18n
+  app.use(i18n).use(injectGlobalComponents).mount('#app')
 
-if (import.meta.env.VITE_ERROR_MONITOR === 'true' && import.meta.env.VITE_ERROR_MONITOR_URL) {
-  initMonitor(import.meta.env.VITE_ERROR_MONITOR_URL)
+  return app
 }
 
-window.TinyGlobalConfig = globalConfig
-setGlobalConfig(globalConfig)
-
-const app = createApp(App)
-
-initSvgs(app)
-window.lowcodeI18n = i18n
-app.use(i18n).use(injectGlobalComponents).mount('#app')
+createDesigner()
