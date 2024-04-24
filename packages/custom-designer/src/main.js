@@ -23,6 +23,7 @@ import 'virtual:svg-icons-register'
 
 import TinyThemeTool from '@opentiny/vue-theme/theme-tool'
 import { tinySmbTheme } from '@opentiny/vue-theme/theme' // SMB 主题
+import '@opentiny/tiny-engine-theme'
 
 function createDesigner() {
   initHttp({ env: import.meta.env })
