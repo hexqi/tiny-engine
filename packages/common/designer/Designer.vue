@@ -18,7 +18,6 @@
 <script>
 import { reactive, ref, watch, onUnmounted } from 'vue'
 import { ConfigProvider as TinyConfigProvider } from '@opentiny/vue'
-import designSmbConfig from '@opentiny/vue-design-smb'
 import { useResource, useLayout, useEditorInfo, useModal, useApp, useNotify } from '@opentiny/tiny-engine-controller'
 import AppManage from '@opentiny/tiny-engine-plugin-page'
 import { isVsCodeEnv } from '@opentiny/tiny-engine-controller/js/environments'
@@ -125,7 +124,6 @@ export default {
       plugins,
       toggleNav,
       layoutState,
-      designSmbConfig
     }
   }
 }
