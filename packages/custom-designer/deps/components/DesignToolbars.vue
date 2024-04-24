@@ -17,14 +17,19 @@
 
 <script>
 import { reactive, nextTick } from 'vue'
-import addons from '@opentiny/tiny-engine-app-addons'
 import { useLayout } from '@opentiny/tiny-engine-controller'
 import { ProgressBar } from '@opentiny/tiny-engine-common'
 export default {
   components: {
     ProgressBar
   },
-  setup() {
+  props: {
+    addons: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  setup(props) {
     const leftBar = []
     const rightBar = []
     const centerBar = []
@@ -32,7 +37,7 @@ export default {
       showDeployBlock: false
     })
 
-    addons.toolbars.forEach((item) => {
+    props.addons.toolbars.forEach((item) => {
       if (item.align === 'right') {
         rightBar.push(item)
       } else if (item.align === 'center') {

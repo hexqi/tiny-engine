@@ -13,17 +13,21 @@
 import { computed, ref } from 'vue'
 import { Tabs, TabItem } from '@opentiny/vue'
 import { useLayout } from '@opentiny/tiny-engine-controller'
-import addons from '@opentiny/tiny-engine-app-addons'
 
 export default {
   components: {
     TinyTabs: Tabs,
     TinyTabItem: TabItem
   },
-
-  setup() {
+  props: {
+    addons: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  setup(props) {
     const { layoutState } = useLayout()
-    const settings = addons && addons.settings
+    const settings = props.addons?.settings
     const activating = computed(() => layoutState.settings.activating)
     const showMask = ref(true)
 

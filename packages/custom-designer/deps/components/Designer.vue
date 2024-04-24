@@ -1,15 +1,15 @@
 <template>
   <div id="tiny-engine">
-    <design-toolbars></design-toolbars>
+    <design-toolbars :addons="{ toolbars: addons.toolbars }"></design-toolbars>
     <div class="tiny-engine-main">
       <div class="tiny-engine-left-wrap">
         <div class="tiny-engine-content-wrap">
-          <design-plugins :render-panel="plugins.render" @click="toggleNav"></design-plugins>
+          <design-plugins :addons="{ plugins: addons.plugins }" :render-panel="plugins.render" @click="toggleNav"></design-plugins>
           <design-canvas></design-canvas>
         </div>
       </div>
       <div class="tiny-engine-right-wrap">
-        <design-settings v-show="layoutState.settings.showDesignSettings" ref="right"></design-settings>
+        <design-settings :addons="{ settings: addons.settings }" v-show="layoutState.settings.showDesignSettings" ref="right"></design-settings>
       </div>
     </div>
   </div>
@@ -26,7 +26,6 @@ import DesignToolbars from './DesignToolbars.vue'
 import DesignPlugins from './DesignPlugins.vue'
 import DesignCanvas from './DesignCanvas.vue'
 import DesignSettings from './DesignSettings.vue'
-import addons from '@opentiny/tiny-engine-app-addons'
 import blockPlugin from '@opentiny/tiny-engine-plugin-block'
 import materials from '@opentiny/tiny-engine-plugin-materials'
 import { useBroadcastChannel } from '@vueuse/core'
@@ -125,7 +124,6 @@ export default {
       right,
       plugins,
       toggleNav,
-      addons,
       layoutState,
       designSmbConfig
     }
