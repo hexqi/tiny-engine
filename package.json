@@ -8,7 +8,7 @@
     "serve:frontend": "pnpm --filter custom-designer serve",
     "serve:backend": "pnpm --filter @opentiny/tiny-engine-mock dev",
     "build:plugin": "pnpm --filter @opentiny/tiny-engine-* build",
-    "build:alpha": "pnpm --filter @opentiny/tiny-engine build:alpha",
+    "build:alpha": "pnpm --filter custom-designer build:alpha",
     "build:prod": "pnpm --filter @opentiny/tiny-engine build:prod",
     "buildComponentSchemas": "node scripts/buildComponentSchemas.js",
     "preview": "pnpm --filter @opentiny/tiny-engine preview",

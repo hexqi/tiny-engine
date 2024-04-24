@@ -10,14 +10,14 @@ import nodePolyfill from 'rollup-plugin-polyfill-node'
 import esbuildCopy from 'esbuild-plugin-copy'
 import lowcodeConfig from './config/lowcode.config'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import { importmapPlugin } from './packages/scripts/externalDeps'
+import { importmapPlugin } from './deps/scripts/externalDeps'
 import visualizer from 'rollup-plugin-visualizer'
 
 const origin = 'http://localhost:9090/'
 
 const config = {
   base: './',
-  publicDir: path.resolve(__dirname, './packages/public'),
+  publicDir: path.resolve(__dirname, './deps/public'),
   resolve: {
     extensions: ['.js', '.jsx', '.vue'],
     alias: {}
@@ -66,7 +66,7 @@ const config = {
     vueJsx(),
     createSvgIconsPlugin({
       iconDirs: [
-        path.resolve(__dirname, './packages/assets/')
+        path.resolve(__dirname, './deps/assets/')
       ],
       symbolId: 'icon-[name]',
       inject: 'body-last'
@@ -105,8 +105,8 @@ const config = {
       input: {
         index: path.resolve(__dirname, './index.html'),
         canvas: path.resolve(__dirname, './canvas.html'),
-        preview: path.resolve(__dirname, './preview.html'),
-        previewApp: path.resolve(__dirname, './previewApp.html')
+        // preview: path.resolve(__dirname, './preview.html'),
+        // previewApp: path.resolve(__dirname, './previewApp.html')
       },
       output: {
         manualChunks: (id) => {
@@ -223,7 +223,8 @@ export default defineConfig(({ command, mode }) => {
       name: 'html-transform',
       transformIndexHtml: {
         enforce: 'pre',
-        transform(html, { filename }) {
+        transform(html, { filename, path: path2 }) {
+          console.log({ filename, path2 });
           return {
             html,
             tags: includeHtmls.includes(path.basename(filename)) ? upgradeHttpsMetaTags : []

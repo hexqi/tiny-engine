@@ -7,7 +7,7 @@
 <script>
 import { ConfigProvider as TinyConfigProvider } from '@opentiny/vue'
 import designSmbConfig from '@opentiny/vue-design-smb'
-import Designer from '../packages/components/Designer.vue'
+import Designer from '../deps/components/Designer.vue'
 import addons from '@opentiny/tiny-engine-app-addons'
 
 export default {
