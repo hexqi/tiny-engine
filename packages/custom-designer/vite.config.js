@@ -10,7 +10,7 @@ import nodePolyfill from 'rollup-plugin-polyfill-node'
 import esbuildCopy from 'esbuild-plugin-copy'
 import lowcodeConfig from './config/lowcode.config'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import { importmapPlugin } from './deps/scripts/externalDeps'
+import { importmapPlugin } from './config/vite/importmapPlugin'
 import visualizer from 'rollup-plugin-visualizer'
 
 const origin = 'http://localhost:9090/'
@@ -224,7 +224,6 @@ export default defineConfig(({ command, mode }) => {
       transformIndexHtml: {
         enforce: 'pre',
         transform(html, { filename, path: path2 }) {
-          console.log({ filename, path2 });
           return {
             html,
             tags: includeHtmls.includes(path.basename(filename)) ? upgradeHttpsMetaTags : []
