@@ -66,7 +66,7 @@ const config = {
     vueJsx(),
     createSvgIconsPlugin({
       iconDirs: [
-        path.resolve(__dirname, './deps/assets/')
+        path.resolve(__dirname, 'node_modules/@opentiny/tiny-engine-svgs/assets/svgs')
       ],
       symbolId: 'icon-[name]',
       inject: 'body-last'
