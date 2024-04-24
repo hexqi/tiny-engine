@@ -132,100 +132,15 @@ const importMapVersions = {
   tinyVue: '~3.11'
 }
 
-const devAlias = {
-  '@opentiny/tiny-engine-addons-manager': path.resolve(__dirname, '../addons-manager/src/index.js'),
-  '@opentiny/tiny-engine-controller/js': path.resolve(__dirname, '../controller/js'),
-  '@opentiny/tiny-engine-common/component': path.resolve(__dirname, '../common/component'),
-  '@opentiny/tiny-engine-common': path.resolve(__dirname, '../common/index.js'),
-  '@opentiny/tiny-engine-controller/utils': path.resolve(__dirname, '../controller/utils.js'),
-  '@opentiny/tiny-engine-controller/adapter': path.resolve(__dirname, '../controller/adapter.js'),
-  '@opentiny/tiny-engine-controller': path.resolve(__dirname, '../controller/src/index.js'),
-  '@opentiny/tiny-engine-theme-dark': path.resolve(__dirname, '../theme/dark/index.less'),
-  '@opentiny/tiny-engine-theme-light': path.resolve(__dirname, '../theme/light/index.less'),
-  '@opentiny/tiny-engine-svgs': path.resolve(__dirname, '../svgs/index.js'),
-  '@opentiny/tiny-engine-http': path.resolve(__dirname, '../http/src/index.js'),
-  '@opentiny/tiny-engine-canvas': path.resolve(__dirname, '../canvas/src/index.js'),
-  '@opentiny/tiny-engine-theme': path.resolve(__dirname, `../theme/${lowcodeConfig.theme}/index.less`),
-  '@opentiny/tiny-engine-utils': path.resolve(__dirname, '../utils/src/index.js'),
-  '@opentiny/tiny-engine-webcomponent-core': path.resolve(__dirname, '../webcomponent/src/lib.js'),
-  '@opentiny/tiny-engine-i18n-host': path.resolve(__dirname, '../i18n/src/lib.js'),
-  '@opentiny/tiny-engine-builtin-component': path.resolve(__dirname, '../builtinComponent/index.js')
+const setProdBuildOptions = ({ mode }) => {
+  if (mode === 'prod') {
+    config.build.minify = true
+    config.build.sourcemap = false
+  }
 }
 
-const prodAlias = {
-  '@opentiny/tiny-engine-theme': path.resolve(
-    __dirname,
-    `node_modules/@opentiny/tiny-engine-theme-${lowcodeConfig.theme}/dist/style.css`
-  )
-}
-
-const commonAlias = {
-  '@opentiny/tiny-engine-app-addons': path.resolve(__dirname, './config/addons.js')
-}
-
-export default defineConfig(({ command, mode }) => {
+const addImportMapPlugin = ({ command, mode, importMapVersions }) => {
   const { VITE_CDN_DOMAIN } = loadEnv(mode, process.cwd(), '')
-  const monacoPublicPath = {
-    local: 'editor/monaco-workers',
-    alpha: 'https://tinyengine-assets.obs.cn-north-4.myhuaweicloud.com/files/monaco-assets',
-    prod: 'https://tinyengine-assets.obs.cn-north-4.myhuaweicloud.com/files/monaco-assets'
-  }
-
-  let monacoEditorPluginInstance = monacoEditorPlugin({ publicPath: monacoPublicPath.local })
-  const htmlPlugin = (mode) => {
-    const upgradeHttpsMetaTags = []
-    const includeHtmls = ['index.html', 'preview.html', 'previewApp.html']
-
-    if (mode === 'alpha' || mode === 'prod') {
-      upgradeHttpsMetaTags.push({
-        tag: 'meta',
-        injectTo: 'head-prepend',
-        attrs: {
-          'http-equiv': 'Content-Security-Policy',
-          content: 'upgrade-insecure-requests'
-        }
-      })
-    }
-
-    return {
-      name: 'html-transform',
-      transformIndexHtml: {
-        enforce: 'pre',
-        transform(html, { filename, path: path2 }) {
-          return {
-            html,
-            tags: includeHtmls.includes(path.basename(filename)) ? upgradeHttpsMetaTags : []
-          }
-        }
-      }
-    }
-  }
-
-  if (command === 'serve') {
-    const devVueAlias = {
-      find: /^vue$/,
-      replacement: `${VITE_CDN_DOMAIN}/vue@${importMapVersions.vue}/dist/vue.runtime.esm-browser.js`
-    }
-
-    config.resolve.alias = [
-      devVueAlias,
-      ...Object.entries({ ...commonAlias, ...devAlias }).map(([find, replacement]) => ({
-        find,
-        replacement
-      }))
-    ]
-  } else {
-    // command === 'build'
-    config.resolve.alias = { ...commonAlias, ...prodAlias }
-
-    monacoEditorPluginInstance = monacoEditorPlugin({ publicPath: monacoPublicPath[mode] })
-
-    if (mode === 'prod') {
-      config.build.minify = true
-      config.build.sourcemap = false
-    }
-  }
-
   const importmap = {
     imports: {
       prettier: `${VITE_CDN_DOMAIN}/prettier@${importMapVersions.prettier}/esm/standalone.mjs`,
@@ -249,8 +164,116 @@ export default defineConfig(({ command, mode }) => {
   }
 
   const importMapStyles = [`${VITE_CDN_DOMAIN}/@opentiny/vue-theme@${importMapVersions.tinyVue}/index.css`]
+  return importmapPlugin(importmap, importMapStyles)
+}
 
-  config.plugins.push(monacoEditorPluginInstance, htmlPlugin(mode), importmapPlugin(importmap, importMapStyles))
+const addPackageAlias = ({ mode, command, importMapVersions }, config) => {
+  const { VITE_CDN_DOMAIN } = loadEnv(mode, process.cwd(), '')
+  const devAlias = {
+    '@opentiny/tiny-engine-addons-manager': path.resolve(__dirname, '../addons-manager/src/index.js'),
+    '@opentiny/tiny-engine-controller/js': path.resolve(__dirname, '../controller/js'),
+    '@opentiny/tiny-engine-common/component': path.resolve(__dirname, '../common/component'),
+    '@opentiny/tiny-engine-common': path.resolve(__dirname, '../common/index.js'),
+    '@opentiny/tiny-engine-controller/utils': path.resolve(__dirname, '../controller/utils.js'),
+    '@opentiny/tiny-engine-controller/adapter': path.resolve(__dirname, '../controller/adapter.js'),
+    '@opentiny/tiny-engine-controller': path.resolve(__dirname, '../controller/src/index.js'),
+    '@opentiny/tiny-engine-theme-dark': path.resolve(__dirname, '../theme/dark/index.less'),
+    '@opentiny/tiny-engine-theme-light': path.resolve(__dirname, '../theme/light/index.less'),
+    '@opentiny/tiny-engine-svgs': path.resolve(__dirname, '../svgs/index.js'),
+    '@opentiny/tiny-engine-http': path.resolve(__dirname, '../http/src/index.js'),
+    '@opentiny/tiny-engine-canvas': path.resolve(__dirname, '../canvas/src/index.js'),
+    '@opentiny/tiny-engine-theme': path.resolve(__dirname, `../theme/${lowcodeConfig.theme}/index.less`),
+    '@opentiny/tiny-engine-utils': path.resolve(__dirname, '../utils/src/index.js'),
+    '@opentiny/tiny-engine-webcomponent-core': path.resolve(__dirname, '../webcomponent/src/lib.js'),
+    '@opentiny/tiny-engine-i18n-host': path.resolve(__dirname, '../i18n/src/lib.js'),
+    '@opentiny/tiny-engine-builtin-component': path.resolve(__dirname, '../builtinComponent/index.js')
+  }
+  
+  const prodAlias = {
+    '@opentiny/tiny-engine-theme': path.resolve(
+      __dirname,
+      `node_modules/@opentiny/tiny-engine-theme-${lowcodeConfig.theme}/dist/style.css`
+    )
+  }
+  
+  const commonAlias = {
+    '@opentiny/tiny-engine-app-addons': path.resolve(__dirname, './config/addons.js')
+  }
+
+  if (command === 'serve') {
+    const devVueAlias = {
+      find: /^vue$/,
+      replacement: `${VITE_CDN_DOMAIN}/vue@${importMapVersions.vue}/dist/vue.runtime.esm-browser.js`
+    }
+
+    config.resolve.alias = [
+      devVueAlias,
+      ...Object.entries({ ...commonAlias, ...devAlias }).map(([find, replacement]) => ({
+        find,
+        replacement
+      }))
+    ]
+  } else {
+    config.resolve.alias = { ...commonAlias, ...prodAlias }
+  }
+}
+
+const addMonacoPlugin = ({ command, mode }) => {
+  const monacoPublicPath = {
+    local: 'editor/monaco-workers',
+    alpha: 'https://tinyengine-assets.obs.cn-north-4.myhuaweicloud.com/files/monaco-assets',
+    prod: 'https://tinyengine-assets.obs.cn-north-4.myhuaweicloud.com/files/monaco-assets'
+  }
+
+  let monacoEditorPluginInstance = monacoEditorPlugin({ publicPath: monacoPublicPath.local })
+
+  if (command !== 'serve') {
+    monacoEditorPluginInstance = monacoEditorPlugin({ publicPath: monacoPublicPath[mode] })
+  }
+
+  return monacoEditorPluginInstance
+}
+
+const addHtmlPlugin = ({ mode }) => {
+  const upgradeHttpsMetaTags = []
+  const includeHtmls = ['index.html', 'preview.html', 'previewApp.html']
+
+  if (mode === 'alpha' || mode === 'prod') {
+    upgradeHttpsMetaTags.push({
+      tag: 'meta',
+      injectTo: 'head-prepend',
+      attrs: {
+        'http-equiv': 'Content-Security-Policy',
+        content: 'upgrade-insecure-requests'
+      }
+    })
+  }
+
+  return {
+    name: 'html-transform',
+    transformIndexHtml: {
+      enforce: 'pre',
+      transform(html, { filename, path: path2 }) {
+        return {
+          html,
+          tags: includeHtmls.includes(path.basename(filename)) ? upgradeHttpsMetaTags : []
+        }
+      }
+    }
+  }
+}
+
+export default defineConfig(({ command, mode }) => {
+
+  setProdBuildOptions({ mode })
+  addPackageAlias({ command, mode, importMapVersions }, config)
+
+  const plugins = [
+    addMonacoPlugin({ command, mode }), 
+    addHtmlPlugin({ mode }), 
+    addImportMapPlugin({ command, mode, importMapVersions }),
+  ]
+  config.plugins.push(...plugins)
 
   return config
 })
