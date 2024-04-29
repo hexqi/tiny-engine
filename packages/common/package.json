@@ -1,6 +1,6 @@
 {
   "name": "@opentiny/tiny-engine-common",
-  "version": "1.0.2",
+  "version": "1.0.3-alpha.0",
   "publishConfig": {
     "access": "public"
   },
@@ -30,10 +30,10 @@
     "@opentiny/tiny-engine-canvas": "workspace:*",
     "@opentiny/tiny-engine-controller": "workspace:*",
     "@opentiny/tiny-engine-http": "workspace:*",
-    "@opentiny/tiny-engine-utils": "workspace:*",
-    "@opentiny/tiny-engine-plugin-page": "workspace:*",
     "@opentiny/tiny-engine-plugin-block": "workspace:*",
     "@opentiny/tiny-engine-plugin-materials": "workspace:*",
+    "@opentiny/tiny-engine-plugin-page": "workspace:*",
+    "@opentiny/tiny-engine-utils": "workspace:*",
     "@opentiny/vue": "~3.10.0",
     "@opentiny/vue-icon": "~3.10.0",
     "@opentiny/vue-renderless": "~3.10.0",
