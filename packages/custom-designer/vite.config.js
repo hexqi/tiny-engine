@@ -9,7 +9,6 @@ import nodePolyfill from 'rollup-plugin-polyfill-node'
 import esbuildCopy from 'esbuild-plugin-copy'
 import lowcodeConfig from './config/lowcode.config'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import { importmapPlugin } from './config/vite/importmapPlugin'
 import visualizer from 'rollup-plugin-visualizer'
 
 const origin = 'http://localhost:9090/'
@@ -139,6 +138,47 @@ const setProdBuildOptions = ({ mode }) => {
   }
 }
 
+const importmapPlugin = (importmap, importMapStyles = []) => {
+  return {
+    name: 'vite-plugin-importmap',
+    config() {
+      return {
+        build: {
+          rollupOptions: {
+            external: Object.keys(importmap.imports)
+          }
+        }
+      }
+    },
+    transformIndexHtml: {
+      enforce: 'pre',
+      transform(html) {
+        return {
+          html,
+          tags: [
+            {
+              tag: 'script',
+              attrs: {
+                type: 'importmap'
+              },
+              children: JSON.stringify(importmap, null, 2),
+              injectTo: 'head-prepend'
+            },
+            ...importMapStyles.map((url) => ({
+              tag: 'link',
+              attrs: {
+                rel: 'stylesheet',
+                href: url
+              },
+              injectTo: 'head-prepend'
+            }))
+          ]
+        }
+      }
+    }
+  }
+}
+
 const addImportMapPlugin = ({ command, mode, importMapVersions }) => {
   const { VITE_CDN_DOMAIN } = loadEnv(mode, process.cwd(), '')
   const importmap = {
@@ -172,7 +212,6 @@ const addPackageAlias = ({ mode, command, importMapVersions }, config) => {
   const devAlias = {
     '@opentiny/tiny-engine-addons-manager': path.resolve(__dirname, '../addons-manager/src/index.js'),
     '@opentiny/tiny-engine-controller/js': path.resolve(__dirname, '../controller/js'),
-    '@opentiny/tiny-engine-common/component': path.resolve(__dirname, '../common/component'),
     '@opentiny/tiny-engine-common': path.resolve(__dirname, '../common/index.js'),
     '@opentiny/tiny-engine-controller/utils': path.resolve(__dirname, '../controller/utils.js'),
     '@opentiny/tiny-engine-controller/adapter': path.resolve(__dirname, '../controller/adapter.js'),

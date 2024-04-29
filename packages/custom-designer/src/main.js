@@ -11,7 +11,6 @@
  */
 
 import { createApp } from 'vue'
-import initSvgs from '@opentiny/tiny-engine-svgs'
 import { setGlobalConfig } from '@opentiny/tiny-engine-controller'
 import i18n from '@opentiny/tiny-engine-controller/js/i18n'
 import App from './App.vue'
@@ -19,6 +18,7 @@ import globalConfig from '../config/lowcode.config'
 import { initMonitor } from '@opentiny/tiny-engine-controller/js/monitor'
 import { injectGlobalComponents } from '@opentiny/tiny-engine-common'
 import { initHttp } from '@opentiny/tiny-engine-http'
+import initSvgs from '@opentiny/tiny-engine-svgs'
 import 'virtual:svg-icons-register'
 
 import TinyThemeTool from '@opentiny/vue-theme/theme-tool'

@@ -40,7 +40,7 @@ export default defineConfig({
           return ''
         }
       },
-      external: ['vue', 'monaco-editor', /@opentiny\/tiny-engine.*/, /@opentiny\/vue.*/, /^prettier.*/]
+      external: ['vue', '@vueuse/core', 'monaco-editor', /@opentiny\/tiny-engine.*/, /@opentiny\/vue.*/, /^prettier.*/]
     }
   }
 })

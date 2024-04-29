@@ -28,7 +28,20 @@ export default defineConfig({
       formats: ['es']
     },
     rollupOptions: {
-      external: ['vue', /@opentiny\/tiny-engine.*/, /@opentiny\/vue.*/]
+      output: {
+        banner: 'import "./style.css"'
+      },
+      external: [
+        'vue',
+        'monaco-editor',
+        /^prettier.*/,
+        /@opentiny\/tiny-engine-canvas.*/, 
+        /@opentiny\/tiny-engine-common.*/, 
+        /@opentiny\/tiny-engine-controller.*/, 
+        /@opentiny\/tiny-engine-http.*/, 
+        /@opentiny\/tiny-engine-svgs.*/, 
+        /@opentiny\/tiny-engine-utils.*/, 
+        /@opentiny\/vue.*/]
     }
   }
 })
