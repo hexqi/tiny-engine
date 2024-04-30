@@ -10,8 +10,7 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "files": [
-    "dist",
-    "js"
+    "dist"
   ],
   "exports": {
     ".": "./dist/index.js",
