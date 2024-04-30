@@ -29,18 +29,13 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        banner: 'import "./style.css"'
+        // banner: 'import "./style.css"'
       },
       external: [
         'vue',
         'monaco-editor',
         /^prettier.*/,
-        /@opentiny\/tiny-engine-canvas.*/, 
-        /@opentiny\/tiny-engine-common.*/, 
-        /@opentiny\/tiny-engine-controller.*/, 
-        /@opentiny\/tiny-engine-http.*/, 
-        /@opentiny\/tiny-engine-svgs.*/, 
-        /@opentiny\/tiny-engine-utils.*/, 
+        /@opentiny\/tiny-engine-.*/, 
         /@opentiny\/vue.*/]
     }
   }
