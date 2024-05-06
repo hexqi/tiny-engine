@@ -31,7 +31,6 @@ import {
   useHistory,
   useModal
 } from '@opentiny/tiny-engine-controller'
-import materials from '@opentiny/tiny-engine-plugin-materials'
 import { useHttp } from '@opentiny/tiny-engine-http'
 import { constants } from '@opentiny/tiny-engine-utils'
 import { isVsCodeEnv, isDevelopEnv } from '@opentiny/tiny-engine-controller/js/environments'
@@ -54,11 +53,19 @@ export default {
     CanvasContainer,
     FooterBar: CanvasFooter
   },
-  setup() {
+  props: {
+    addons: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  setup(props) {
     const footData = ref([])
     const showMask = ref(true)
     const canvasRef = ref(null)
     let showModal = false // 弹窗标识
+
+    const materials = props.addons.plugins.find((item) => item.id === 'Materials')
 
     const removeNode = (node) => {
       const { pageState } = useCanvas()
@@ -156,7 +163,7 @@ export default {
       nodeSelected,
       selectFooterNode,
       footData,
-      materialsPanel: materials.component,
+      materialsPanel: materials?.component,
       showMask,
       controller: {
         // 需要在canvas/render或内置组件里使用的方法

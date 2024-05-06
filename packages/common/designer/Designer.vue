@@ -4,12 +4,20 @@
     <div class="tiny-engine-main">
       <div class="tiny-engine-left-wrap">
         <div class="tiny-engine-content-wrap">
-          <design-plugins :addons="{ plugins: addons.plugins }" :render-panel="plugins.render" @click="toggleNav"></design-plugins>
-          <design-canvas></design-canvas>
+          <design-plugins
+            :addons="{ plugins: addons.plugins }"
+            :render-panel="plugins.render"
+            @click="toggleNav"
+          ></design-plugins>
+          <design-canvas :addons="{ plugins: addons.plugins }"></design-canvas>
         </div>
       </div>
       <div class="tiny-engine-right-wrap">
-        <design-settings :addons="{ settings: addons.settings }" v-show="layoutState.settings.showDesignSettings" ref="right"></design-settings>
+        <design-settings
+          :addons="{ settings: addons.settings }"
+          v-show="layoutState.settings.showDesignSettings"
+          ref="right"
+        ></design-settings>
       </div>
     </div>
   </div>
@@ -19,20 +27,15 @@
 import { reactive, ref, watch, onUnmounted } from 'vue'
 import { ConfigProvider as TinyConfigProvider } from '@opentiny/vue'
 import { useResource, useLayout, useEditorInfo, useModal, useApp, useNotify } from '@opentiny/tiny-engine-controller'
-import AppManage from '@opentiny/tiny-engine-plugin-page'
 import { isVsCodeEnv } from '@opentiny/tiny-engine-controller/js/environments'
 import DesignToolbars from './DesignToolbars.vue'
 import DesignPlugins from './DesignPlugins.vue'
 import DesignCanvas from './DesignCanvas.vue'
 import DesignSettings from './DesignSettings.vue'
-import blockPlugin from '@opentiny/tiny-engine-plugin-block'
-import materials from '@opentiny/tiny-engine-plugin-materials'
 import { useBroadcastChannel } from '@vueuse/core'
 import { constants } from '@opentiny/tiny-engine-utils'
 
 const { message } = useModal()
-const { requestInitBlocks } = blockPlugin.api
-const { fetchGroups } = materials.api
 const { BROADCAST_CHANNEL } = constants
 
 export default {
@@ -55,7 +58,14 @@ export default {
       default: () => ({})
     }
   },
-  setup() {
+  setup(props) {
+    const AppManage = props.addons.plugins.find((item) => item.id === 'AppManage')
+    const blockPlugin = props.addons.plugins.find((item) => item.id === 'BlockManage')
+    const materials = props.addons.plugins.find((item) => item.id === 'Materials')
+
+    const { requestInitBlocks } = blockPlugin?.api || {}
+    const { fetchGroups } = materials?.api || {}
+
     const state = reactive({
       globalClass: '',
       rightWidth: '',
@@ -123,7 +133,7 @@ export default {
       right,
       plugins,
       toggleNav,
-      layoutState,
+      layoutState
     }
   }
 }
