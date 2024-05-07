@@ -127,7 +127,7 @@ const config = {
 
 const importMapVersions = {
   prettier: '2.7.1',
-  vue: '3',
+  vue: '3.4.23',
   tinyVue: '~3.11'
 }
 
@@ -210,6 +210,39 @@ const addImportMapPlugin = ({ command, mode, importMapVersions }) => {
 const addPackageAlias = ({ mode, command, importMapVersions }, config) => {
   const { VITE_CDN_DOMAIN } = loadEnv(mode, process.cwd(), '')
   const devAlias = {
+    '@opentiny/tiny-engine-plugin-materials': path.resolve(__dirname, '../plugins/materials/index.js'),
+    '@opentiny/tiny-engine-plugin-block': path.resolve(__dirname, '../plugins/block/index.js'),
+    '@opentiny/tiny-engine-plugin-data': path.resolve(__dirname, '../plugins/data/index.js'),
+    '@opentiny/tiny-engine-plugin-datasource': path.resolve(__dirname, '../plugins/datasource/index.js'),
+    '@opentiny/tiny-engine-plugin-script': path.resolve(__dirname, '../plugins/script/index.js'),
+    '@opentiny/tiny-engine-plugin-tree': path.resolve(__dirname, '../plugins/tree/index.js'),
+    '@opentiny/tiny-engine-plugin-help': path.resolve(__dirname, '../plugins/help/index.js'),
+    '@opentiny/tiny-engine-plugin-schema': path.resolve(__dirname, '../plugins/schema/index.js'),
+    '@opentiny/tiny-engine-plugin-page': path.resolve(__dirname, '../plugins/page/index.js'),
+    '@opentiny/tiny-engine-plugin-i18n': path.resolve(__dirname, '../plugins/i18n/index.js'),
+    '@opentiny/tiny-engine-plugin-bridge': path.resolve(__dirname, '../plugins/bridge/index.js'),
+    '@opentiny/tiny-engine-plugin-tutorial': path.resolve(__dirname, '../plugins/tutorial/index.js'),
+    '@opentiny/tiny-engine-plugin-robot': path.resolve(__dirname, '../plugins/robot/index.js'),
+    '@opentiny/tiny-engine-setting-events': path.resolve(__dirname, '../settings/events/index.js'),
+    '@opentiny/tiny-engine-setting-props': path.resolve(__dirname, '../settings/props/index.js'),
+    '@opentiny/tiny-engine-setting-styles': path.resolve(__dirname, '../settings/styles/index.js'),
+    '@opentiny/tiny-engine-toolbar-breadcrumb': path.resolve(__dirname, '../toolbars/breadcrumb/index.js'),
+    '@opentiny/tiny-engine-toolbar-fullscreen': path.resolve(__dirname, '../toolbars/fullscreen/index.js'),
+    '@opentiny/tiny-engine-toolbar-lang': path.resolve(__dirname, '../toolbars/lang/index.js'),
+    '@opentiny/tiny-engine-toolbar-layout': path.resolve(__dirname, '../toolbars/layout/index.js'),
+    '@opentiny/tiny-engine-toolbar-checkinout': path.resolve(__dirname, '../toolbars/lock/index.js'),
+    '@opentiny/tiny-engine-toolbar-logo': path.resolve(__dirname, '../toolbars/logo/index.js'),
+    '@opentiny/tiny-engine-toolbar-logout': path.resolve(__dirname, '../toolbars/logout/index.js'),
+    '@opentiny/tiny-engine-toolbar-media': path.resolve(__dirname, '../toolbars/media/index.js'),
+    '@opentiny/tiny-engine-toolbar-preview': path.resolve(__dirname, '../toolbars/preview/index.js'),
+    '@opentiny/tiny-engine-toolbar-generate-vue': path.resolve(__dirname, '../toolbars/generate-vue/index.js'),
+    '@opentiny/tiny-engine-toolbar-refresh': path.resolve(__dirname, '../toolbars/refresh/index.js'),
+    '@opentiny/tiny-engine-toolbar-redoundo': path.resolve(__dirname, '../toolbars/redoundo/index.js'),
+    '@opentiny/tiny-engine-toolbar-clean': path.resolve(__dirname, '../toolbars/clean/index.js'),
+    '@opentiny/tiny-engine-toolbar-save': path.resolve(__dirname, '../toolbars/save/index.js'),
+    '@opentiny/tiny-engine-toolbar-setting': path.resolve(__dirname, '../toolbars/setting/index.js'),
+    '@opentiny/tiny-engine-toolbar-collaboration': path.resolve(__dirname, '../toolbars/collaboration/index.js'),
+  
     '@opentiny/tiny-engine-addons-manager': path.resolve(__dirname, '../addons-manager/src/index.js'),
     '@opentiny/tiny-engine-controller/js': path.resolve(__dirname, '../controller/js'),
     '@opentiny/tiny-engine-common': path.resolve(__dirname, '../common/index.js'),
