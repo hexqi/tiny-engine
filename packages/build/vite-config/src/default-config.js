@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import monacoEditorPluginCjs from 'vite-plugin-monaco-editor'
@@ -8,16 +8,11 @@ import nodeModulesPolyfillPluginCjs from '@esbuild-plugins/node-modules-polyfill
 import nodePolyfill from 'rollup-plugin-polyfill-node'
 import esbuildCopy from 'esbuild-plugin-copy'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import { importmapPlugin } from './scripts/externalDeps.js'
+import { importmapPlugin } from './externalDeps.js'
 import visualizerCjs from 'rollup-plugin-visualizer'
 import { fileURLToPath } from 'node:url'
 import generateComment from '@opentiny/tiny-engine-vite-plugin-meta-comments'
-import {
-  getBaseUrlFromCli,
-  copyBundleDeps,
-  copyPreviewImportMap,
-  copyLocalImportMap
-} from './scripts/localCdnFile/index.js'
+import { getBaseUrlFromCli, copyBundleDeps, copyPreviewImportMap, copyLocalImportMap } from './localCdnFile/index.js'
 
 const monacoEditorPlugin = monacoEditorPluginCjs.default
 const nodeGlobalsPolyfillPlugin = nodeGlobalsPolyfillPluginCjs.default
@@ -79,12 +74,7 @@ const config = {
         }
       }
     }),
-    vueJsx(),
-    createSvgIconsPlugin({
-      iconDirs: [path.resolve(__dirname, './assets/')],
-      symbolId: 'icon-[name]',
-      inject: 'body-last'
-    })
+    vueJsx()
   ],
   optimizeDeps: {
     esbuildOptions: {
@@ -117,10 +107,9 @@ const config = {
     rollupOptions: {
       plugins: [nodePolyfill({ include: null })], // 使用@rollup/plugin-inject的默认值{include: null}, 即在所有代码中生效
       input: {
-        index: path.resolve(__dirname, './index.html'),
-        canvas: path.resolve(__dirname, './canvas.html'),
-        preview: path.resolve(__dirname, './preview.html'),
-        previewApp: path.resolve(__dirname, './previewApp.html')
+        index: path.resolve(process.cwd(), './index.html'),
+        canvas: path.resolve(process.cwd(), './canvas.html'),
+        preview: path.resolve(process.cwd(), './preview.html')
       },
       output: {
         manualChunks: (id) => {
@@ -147,12 +136,9 @@ const importMapVersions = {
   tinyVue: '~3.14'
 }
 
-export default defineConfig(({ command = 'serve', mode = 'serve' }) => {
-  const {
-    VITE_CDN_DOMAIN = 'https://npm.onmicrosoft.cn',
-    VITE_LOCAL_IMPORT_MAPS,
-    VITE_LOCAL_BUNDLE_DEPS
-  } = loadEnv(mode, process.cwd(), '')
+export default defineConfig(({ command = 'serve', mode = 'serve' }, extOptions) => {
+  const { VITE_CDN_DOMAIN = 'https://npm.onmicrosoft.cn', VITE_LOCAL_IMPORT_MAPS, VITE_LOCAL_BUNDLE_DEPS } = extOptions
+
   const isLocalImportMap = VITE_LOCAL_IMPORT_MAPS === 'true' // true公共依赖库使用本地打包文件，false公共依赖库使用公共CDN
   const isCopyBundleDeps = VITE_LOCAL_BUNDLE_DEPS === 'true' // true bundle里的cdn依赖处理成本地依赖， false 不处理
 
@@ -231,6 +217,11 @@ export default defineConfig(({ command = 'serve', mode = 'serve' }) => {
   const importMapStyles = [`${VITE_CDN_DOMAIN}/@opentiny/vue-theme@${importMapVersions.tinyVue}/index.css`]
 
   config.plugins.push(
+    createSvgIconsPlugin({
+      iconDirs: extOptions.iconDirs || [],
+      symbolId: 'icon-[name]',
+      inject: 'body-last'
+    }),
     monacoEditorPluginInstance,
     htmlPlugin(mode),
     isLocalImportMap
