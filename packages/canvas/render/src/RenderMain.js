@@ -345,6 +345,42 @@ const setSchema = async (data) => {
 
 const getNode = (id, parent) => (id ? getNodeById(id, parent) : schema)
 
+let canvasRenderer = null
+
+const defaultRenderer = function() {
+  // 渲染画布增加根节点，与出码和预览保持一致
+  const rootChildrenSchema = {
+    componentName: 'div',
+    props: schema.props,
+    children: schema.children
+  }
+
+  return h(
+    'tiny-i18n-host',
+    {
+      locale: 'zh_CN',
+      key: refreshKey.value,
+      ref: 'page',
+      className: 'design-page'
+    },
+    schema.children?.length ? h(renderer, { schema: rootChildrenSchema, parent: schema }) : [h(CanvasEmpty)]
+  )
+}
+
+const getRenderer = () => canvasRenderer || defaultRenderer
+
+const setRenderer = (fn) => {
+  canvasRenderer = fn
+}
+
+let rendererMounted
+
+const getRendererMounted = () => rendererMounted || function() {}
+
+const setRendererMounted = (fn) => {
+  rendererMounted = fn
+}
+
 export default {
   setup() {
     provide('rootSchema', schema)
@@ -376,23 +412,7 @@ export default {
     )
   },
   render() {
-    // 渲染画布增加根节点，与出码和预览保持一致
-    const rootChildrenSchema = {
-      componentName: 'div',
-      props: schema.props,
-      children: schema.children
-    }
-
-    return h(
-      'tiny-i18n-host',
-      {
-        locale: 'zh_CN',
-        key: refreshKey.value,
-        ref: 'page',
-        className: 'design-page'
-      },
-      schema.children?.length ? h(renderer, { schema: rootChildrenSchema, parent: schema }) : [h(CanvasEmpty)]
-    )
+    return getRenderer().call(this)
   }
 }
 
@@ -424,4 +444,8 @@ export const api = {
   setDataSourceMap,
   setGlobalState,
   setNode,
+  getRenderer,
+  setRenderer,
+  getRendererMounted,
+  setRendererMounted
 }
