@@ -1,5 +1,3 @@
-# .github/labeler.yml
-
 version: v1
 
 labels:
@@ -7,8 +5,7 @@ labels:
     sync: true # remove label if match failed, default: false (pull_request/issue only)
     matcher:
       # Matcher will match on any 8 matchers
-      title: '^feat:.*'
-      title: '^feature:.*'
+      title: ['^feat:.*', '^feature:.*']
   - label: 'bug'
     sync: true # remove label if match failed, default: false (pull_request/issue only)
     matcher:
