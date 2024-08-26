@@ -1,0 +1,6 @@
+ospp-2024:
+- base-branch: ['ospp-2024/*']
+
+document:
+- changed-files:
+  - any-glob-to-any-file: ['docs/*', '**/*.md']

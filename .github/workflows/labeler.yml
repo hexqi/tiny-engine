@@ -9,15 +9,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/labeler@v5
+      # - uses: actions/labeler@v5
+      #   with:
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+      #     configuration-path: '.github/labeler-action.yml'
+      #     sync-labels: true
+      - uses: fuxingloh/multi-labeler@v4 # v4
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          sync-labels: true
-      - name: Apply labels based on PR title
-        uses: TimonVS/pr-labeler-action@v5
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          configuration-path: .github/pr-labeler.yml
+          github-token: ${{ secrets.GITHUB_TOKEN }} # optional, default to '${{ github.token }}'
+          config-path: .github/multi-labeler.yml # optional, default to '.github/labeler.yml'
+      # - name: Check Labels
+      #   id: labeler
+      #   uses: jimschubert/labeler-action@v2
+      #   with:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      # - name: Apply labels based on PR title
+      #   uses: TimonVS/pr-labeler-action@v5
+      #   with:
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+      #     configuration-path: .github/pr-labeler.yml
       # - uses: ZeWaka/KeywordLabeler@master
       #   with:
       #     repo-token: ${{ secrets.GITHUB_TOKEN }}
