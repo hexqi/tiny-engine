@@ -13,9 +13,14 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           sync-labels: true
-      - uses: ZeWaka/KeywordLabeler@master
+      - name: Apply labels based on PR title
+        uses: TimonVS/pr-labeler-action@v5
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/pr-labeler.yml
+      # - uses: ZeWaka/KeywordLabeler@master
+      #   with:
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
       # - name: "Assign label based on the title"
       #   uses: Bhacaz/label-regex@v2.1
       #   with:
