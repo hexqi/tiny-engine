@@ -1,0 +1,20 @@
+autolabeler:
+  - label: 'document'
+    files:
+      - '*.md'
+      - 'docs/*'
+    branch:
+      - '/docs{0,1}\/.+/'
+  - label: 'bug'
+    branch:
+      - '/fix\/.+/'
+    title:
+      - '/fix/i'
+  - label: 'enhancement'
+    branch:
+      - '/feat(ure)?\/.+/'
+    title:
+      - '/feat(ure)?/i'
+  - label: 'ospp-2024'
+    branch:
+      - 'ospp-2024/*'
