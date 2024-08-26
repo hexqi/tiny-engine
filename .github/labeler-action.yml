@@ -1,9 +1,3 @@
-bug:
-- title: 'fix*'
-
-enhancement:
-- title: 'feat*'
-
 ospp-2024:
 - base-branch: ['ospp-2024/*']
 
