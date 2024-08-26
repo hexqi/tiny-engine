@@ -9,16 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # - uses: actions/labeler@v5
-      #   with:
-      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
-      #     sync-labels: true
+      - uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: '.github/labeler-action.yml'
+          sync-labels: true
       - name: Check Labels
         id: labeler
         uses: jimschubert/labeler-action@v2
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          config-path: '.github/labeler-action.yml'
       # - name: Apply labels based on PR title
       #   uses: TimonVS/pr-labeler-action@v5
       #   with:
