@@ -2,17 +2,18 @@ version: v1
 
 labels:
   - label: 'enhancement'
-    sync: true # remove label if match failed, default: false (pull_request/issue only)
+    sync: true
     matcher:
-      # Matcher will match on any 8 matchers
-      title: ['^feat:.*', '^feature:.*']
+      title: '^feat:.*'
+  - label: 'document'
+    sync: true
+    matcher:
+      title: '^docs:.*'
   - label: 'bug'
-    sync: true # remove label if match failed, default: false (pull_request/issue only)
+    sync: true
     matcher:
-      # Matcher will match on any 8 matchers
       title: '^fix:.*'
   - label: 'ospp-2024'
-    sync: true # remove label if match failed, default: false (pull_request/issue only)
+    sync: true
     matcher:
-      # Matcher will match on any 8 matchers
       baseBranch: '^ospp-2024/.*'
