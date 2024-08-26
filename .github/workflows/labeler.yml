@@ -9,9 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: release-drafter/release-drafter@v6
+      - uses: actions/labeler@v5
         with:
-          disable-releaser: true
-          disable-autolabeler: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          sync-labels: true
+      - uses: ZeWaka/KeywordLabeler@master
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: "Assign label based on the title"
+      #   uses: Bhacaz/label-regex@v2.1
+      #   with:
+      #     field: title
+      #     regex: '([A-Z]+?)-'
+      #     lowercase: true
+      #     token: ${{ github.token }}
