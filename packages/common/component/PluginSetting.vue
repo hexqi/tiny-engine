@@ -176,6 +176,10 @@ export default {
     .plugin-setting-header-title {
       font-size: 12px;
       font-weight: 700;
+      margin-right: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     :deep(.svg-button + .svg-button) {
       margin: 0;

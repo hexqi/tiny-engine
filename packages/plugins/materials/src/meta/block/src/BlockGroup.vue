@@ -429,6 +429,7 @@ export default {
     border-bottom: 1px solid var(--ti-lowcode-materials-block-group-item-border-color);
     :deep(.tiny-input__inner) {
       border-color: transparent;
+      width: 180px;
     }
   }
   .confirm-btns {
@@ -437,6 +438,9 @@ export default {
     }
     :deep(svg) {
       color: var(--ti-lowcode-component-svg-button-color);
+    }
+    :deep(.tiny-button) {
+      padding: 0 2px;
     }
   }
   &.show-underline {
@@ -454,6 +458,12 @@ export default {
   }
   .option-right {
     display: none;
+  }
+  .option-label {
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 .tiny-form .tiny-form-item.edit-form-item {
