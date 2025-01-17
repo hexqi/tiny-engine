@@ -32,13 +32,13 @@ jobs:
         run: pnpm install
 
       - name: Run Build
-        run: pnpm run build:plugin && pnpm run build:alpha > build-alpha.log 2>&1
+        run: pnpm run build:plugin && pnpm run build:alpha > /tmp/build-alpha.log 2>&1
 
       - name: Upload build logs
         uses: actions/upload-artifact@v4
         with:
           name: build-alpha-log
-          path: build-alpha.log
+          path: /tmp/build-alpha.log
 
       - name: Parse Publish tag
         id: parse_tag
