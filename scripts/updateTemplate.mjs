@@ -74,12 +74,15 @@ async function updatePkgJson() {
 
   pkgData.devDependencies['concurrently'] = '^8.2.0'
 
-  Object.keys(pkgData.dependencies)
-    .filter((name) => name.includes('@opentiny/tiny-engine'))
-    .forEach((name) => (pkgData.dependencies[name] = version))
-  Object.keys(pkgData.devDependencies)
-    .filter((name) => name.includes('@opentiny/tiny-engine'))
-    .forEach((name) => (pkgData.devDependencies[name] = version))
+  const updateDependencyVersions = (deps) => {
+    Object.keys(deps)
+      .filter((name) => name.includes('@opentiny/tiny-engine'))
+      .forEach((name) => {
+        deps[name] = version
+      })
+  }
+  updateDependencyVersions(pkgData.dependencies)
+  updateDependencyVersions(pkgData.devDependencies)
 
   await fs.writeJSON(pkgJsonPath, pkgData, { spaces: 2 })
 }
@@ -96,6 +99,7 @@ async function modifyViteConfig() {
   }
 }
 
+// 同步design-demo代码到CLI模板，避免模板未更新或版本号未修改
 async function main() {
   await copyTemplate()
   await updatePkgJson()
