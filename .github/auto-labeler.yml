@@ -1,6 +1,11 @@
 version: v1
 
 labels:
+  - label: 'ignore-for-release'
+    sync: true
+    matcher:
+      title: '^[vV]?\d+(\.\d+){2}.*'
+      body: '#ignore'
   - label: 'breaking-change'
     sync: true
     matcher:
@@ -13,7 +18,7 @@ labels:
   - label: 'bug'
     sync: true
     matcher:
-      title: '^[fF]ix.*' 
+      title: '^[fF]ix.*'
   - label: 'documentation'
     sync: true
     matcher:
