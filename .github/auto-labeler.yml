@@ -10,14 +10,15 @@ labels:
     sync: true
     matcher:
       title: '^[fF]eat.*'
-  - label: 'documentation'
-    sync: true
-    matcher:
-      title: '^[dD](ocs|ocumentation).*'
   - label: 'bug'
     sync: true
     matcher:
       title: '^[fF]ix.*' 
+  - label: 'documentation'
+    sync: true
+    matcher:
+      title: '^[dD](ocs|ocumentation).*'
+      files: 'docs/**/*.md'
   - label: 'refactoring'
     sync: true
     matcher:
@@ -26,6 +27,7 @@ labels:
     sync: true
     matcher:
       title: '^[tT]est.*'
+      files: '**/__tests__/**'
   - label: 'chore'
     sync: true
     matcher:
@@ -34,6 +36,7 @@ labels:
     sync: true
     matcher:
       title: '^[cC]i.*'
+      files: '.github/**'
   - label: 'ospp'
     sync: true
     matcher:
