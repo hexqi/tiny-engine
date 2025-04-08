@@ -1,23 +1,48 @@
 version: v1
 
 labels:
+  - label: 'breaking-change'
+    sync: true
+    matcher:
+      title: '^.+!:|#breaking'
+      body: '#breaking'
   - label: 'enhancement'
     sync: true
     matcher:
-      title: '^feat:.*'
-  - label: 'document'
+      title: '^[fF]eat.*'
+  - label: 'documentation'
     sync: true
     matcher:
-      title: '^docs:.*'
+      title: '^[dD](ocs|ocumentation).*'
   - label: 'bug'
     sync: true
     matcher:
-      title: '^fix:.*'
-  - label: 'ospp-2024'
+      title: '^[fF]ix.*' 
+  - label: 'refactoring'
     sync: true
     matcher:
-      baseBranch: '^ospp-2024/.*'
-  - label: 'refactor-main'
+      title: '^[rR]efactor.*'
+  - label: 'test'
     sync: true
     matcher:
-      baseBranch: 'refactor/develop'
+      title: '^[tT]est.*'
+  - label: 'chore'
+    sync: true
+    matcher:
+      title: '^[cC]hore.*'
+  - label: 'ci'
+    sync: true
+    matcher:
+      title: '^[cC]i.*'
+  - label: 'ospp'
+    sync: true
+    matcher:
+      baseBranch: '^ospp-\d+/.*'
+  - label: '1.x'
+    sync: true
+    matcher:
+      baseBranch: '^v1\.x'
+  - label: 'release'
+    sync: true
+    matcher:
+      baseBranch: '^release/v2.*'

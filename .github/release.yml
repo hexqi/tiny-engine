@@ -18,9 +18,16 @@ changelog:
       labels:
         - Semver-Patch
         - bug
-    - title: Other Changes
+    - title: "📖 Documentation"
       labels:
         - documentation
+    - title: "🔧 Maintenance"
+      labels:
         - refactoring
+        - test
         - unit-test
+        - chore
         - ci
+    - title: "Other Changes"
+      labels: ["*"]
+      collapse: true
