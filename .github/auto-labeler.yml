@@ -54,3 +54,4 @@ labels:
     sync: true
     matcher:
       baseBranch: '^release\/v2.*'
+
