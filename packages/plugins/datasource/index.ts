@@ -15,11 +15,13 @@ import entry from './src/Main.vue'
 import metaData from './meta'
 import { DataSourceService } from './src/composable'
 import './src/styles/vars.less'
+import mcp from './src/mcp'
 
 export default {
   ...metaData,
   entry,
-  metas: [DataSourceService]
+  metas: [DataSourceService],
+  mcp
 }
 
 export { fetchDataSourceList, fetchDataSourceDetail, DataSourceService }

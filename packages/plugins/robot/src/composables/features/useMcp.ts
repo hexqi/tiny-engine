@@ -8,6 +8,8 @@ import { MCPHost } from '../../services/MCPHost'
 
 const mcpHost = new MCPHost()
 
+window.getMcpClients = () => Array.from(mcpHost.clients)
+
 const ENGINE_MCP_SERVER: PluginInfo = {
   id: 'tiny-engine-mcp-server',
   name: 'Tiny Engine MCP 工具',
@@ -44,7 +46,7 @@ const convertMCPToOpenAITools = (mcpTools: McpTool[]): RequestTool[] => {
   return mcpTools.map((tool: McpTool) => ({
     type: 'function',
     function: {
-      name: tool.name,
+      name: tool.id || tool.name,
       description: tool.description || '',
       parameters: {
         type: 'object',
@@ -185,7 +187,7 @@ const toolsMap = computed(() => {
       server.tools
         .filter((tool) => tool.enabled)
         .forEach((tool) => {
-          acc[tool.name] = {
+          acc[tool.id || tool.name] = {
             server: server.id,
             ...tool
           }
@@ -194,8 +196,9 @@ const toolsMap = computed(() => {
     }, {})
 })
 
-const callTool = async (toolId: string, args: Record<string, unknown>) =>
-  mcpHost.getClient(toolsMap.value[toolId]?.server)?.callTool({ name: toolId, arguments: args }) || {}
+const callTool = async (toolId: string, args: Record<string, unknown>) => {
+  return mcpHost.getClient(toolsMap.value[toolId]?.server)?.callTool({ name: toolId, arguments: args }) || {}
+}
 
 const tools = computed(() => {
   return convertMCPToOpenAITools(
