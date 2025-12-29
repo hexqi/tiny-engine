@@ -11,17 +11,19 @@
  */
 import { configurators } from './configurators/'
 import 'virtual:svg-icons-register'
+import mcp from './mcp'
 
 async function startApp() {
   const registry = await import('../registry')
-  const { init } = await import('@opentiny/tiny-engine')
+  const { init, getMetaApi, META_SERVICE } = await import('@opentiny/tiny-engine')
 
-  init({
+  await init({
     // 合并多个注册表
     registry: [registry.default],
     configurators,
     createAppSignal: ['global_service_init_finish']
   })
+  getMetaApi(META_SERVICE.McpService).registerTools(mcp.tools)
 }
 
 startApp()

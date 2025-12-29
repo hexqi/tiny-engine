@@ -40,6 +40,7 @@ const updateEngineTools = async () => {
     enabled: tool.status === 'enabled'
   }))
   updateServerTools(ENGINE_MCP_SERVER.id, engineTools)
+  return engineTools
 }
 
 const convertMCPToOpenAITools = (mcpTools: McpTool[]): RequestTool[] => {
@@ -197,7 +198,7 @@ const toolsMap = computed(() => {
 })
 
 const callTool = async (toolId: string, args: Record<string, unknown>) => {
-  return mcpHost.getClient(toolsMap.value[toolId]?.server)?.callTool({ name: toolId, arguments: args }) || {}
+  return mcpHost.getClient(toolsMap.value[toolId]?.server)?.callTool({ name: toolId, arguments: args || {} }) || {}
 }
 
 const tools = computed(() => {
@@ -210,7 +211,20 @@ const tools = computed(() => {
 })
 
 const getLLMTools = async () => {
-  return tools.value
+  const servers = inUseMcpServers.value.filter((server) => server.enabled && server.tools.length > 0)
+  const tools = await Promise.all(
+    servers.map(async (server) => {
+      const enabledTools = server.tools?.filter((tool) => tool.enabled).map((tool) => tool.id || tool.name) || []
+      const client = mcpHost.getClient(server.id)
+      if (client) {
+        const listToolResult: { tools: McpTool[] } = await client.listTools()
+        return listToolResult.tools.filter((tool) => enabledTools.includes(tool.name))
+      }
+      return []
+    })
+  )
+
+  return convertMCPToOpenAITools(tools.flat())
 }
 
 const isToolsEnabled = computed(() => tools.value.length > 0)
